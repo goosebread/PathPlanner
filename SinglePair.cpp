@@ -12,7 +12,7 @@ bool findPathDFSRecursive(Graph::vertex_descriptor start, Graph::vertex_descript
 
     //check unexplored connected nodes
     Graph::adjacency_iterator nIt, nEnd;
-    tie(nIt, nEnd) = adjacent_vertices(start, g);
+    boost::tie(nIt, nEnd) = adjacent_vertices(start, g);
 
     g[start].marked = true;
     for (; nIt != nEnd; nIt++) {
@@ -57,7 +57,7 @@ bool findPathDFSStack(Graph::vertex_descriptor start, Graph::vertex_descriptor e
 
             //add neighbors to stack
             Graph::adjacency_iterator nIt, nEnd;
-            tie(nIt, nEnd) = adjacent_vertices(currentNode, g);
+            boost::tie(nIt, nEnd) = adjacent_vertices(currentNode, g);
 
             for (; nIt != nEnd; nIt++) {
                 if (!g[*nIt].visited && !g[*nIt].marked) {
@@ -105,7 +105,7 @@ bool limitedDFS(Graph::vertex_descriptor start, Graph::vertex_descriptor end, Gr
 
     //check connected nodes
     Graph::adjacency_iterator nIt, nEnd;
-    tie(nIt, nEnd) = adjacent_vertices(start, g);
+    boost::tie(nIt, nEnd) = adjacent_vertices(start, g);
 
     for (; nIt != nEnd; nIt++) {
         //don't loop back to parent
@@ -124,8 +124,7 @@ bool limitedDFS(Graph::vertex_descriptor start, Graph::vertex_descriptor end, Gr
     return false;
 }
 
-bool findShortestPathBFS(Graph::vertex_descriptor start, Graph::vertex_descriptor end, Graph& g)
-{
+bool findShortestPathBFS(Graph::vertex_descriptor start, Graph::vertex_descriptor end, Graph& g){
     graphFunctions::clearMarked(g);
     graphFunctions::clearVisited(g);
 
@@ -147,7 +146,7 @@ bool findShortestPathBFS(Graph::vertex_descriptor start, Graph::vertex_descripto
 
             //add neighbors to stack
             Graph::adjacency_iterator nIt, nEnd;
-            tie(nIt, nEnd) = adjacent_vertices(currentNode, g);
+            boost::tie(nIt, nEnd) = adjacent_vertices(currentNode, g);
 
             for (; nIt != nEnd; nIt++) {
                 if (!g[*nIt].visited && !g[*nIt].marked) {
@@ -172,3 +171,74 @@ bool graphToStack(Graph::vertex_descriptor start, Graph::vertex_descriptor end, 
     s.push(currentNode);
     return true;
 }
+
+void runBasic(){
+    ifstream fin;
+
+    // Read the maze from the file.
+    //ask for keyboard input here
+    string fileName = "maze_test.txt";
+
+    //test file validity
+    fin.open(fileName.c_str());
+    if (!fin){
+        cerr << "Cannot open " << fileName << endl;
+        exit(1);
+    }
+
+    maze m(fin);
+    fin.close();
+
+
+    Graph g;
+    m.mapMazeToGraph(g);
+
+    Graph::vertex_iterator vIt, vEnd;
+
+    graphFunctions::clearMarked(g);
+    graphFunctions::clearVisited(g);
+    graphFunctions::setNodeWeights(g, 1);
+
+    boost::tie(vIt, vEnd) = vertices(g);
+    //vEnd is a sentinel value, can't dereference
+
+    std::cout << "Recursive DFS with backtracking:\n";
+    if (findPathDFSRecursive(*vIt, *(vEnd - 1), m, g)) {
+    }
+    else {
+        std::cout << "No path exists\n";
+    }
+
+    std::cout << "DFS using a stack:\n";
+    if (findPathDFSStack(*vIt, *(vEnd - 1), g)) {
+        std::stack<Graph::vertex_descriptor> s;
+        graphToStack(*vIt, *(vEnd - 1), s, g);
+        m.printPath(*(vEnd - 1), s, g);
+    }
+    else {
+        std::cout << "No path exists\n";
+    }
+
+    std::cout << "Iterative DFS to find shortest path:\n";
+    if (findShortestPathDFS(*vIt, *(vEnd - 1), g)) {
+        std::stack<Graph::vertex_descriptor> s;
+        graphToStack(*vIt, *(vEnd - 1), s, g);
+        m.printPath(*(vEnd - 1), s, g);
+    }
+    else {
+        std::cout << "No path exists\n";
+    }
+
+    std::cout << "BFS to find shortest path:\n";
+    if (findShortestPathBFS(*vIt, *(vEnd - 1), g)) {
+        std::stack<Graph::vertex_descriptor> s;
+        graphToStack(*vIt, *(vEnd - 1), s, g);
+        m.printPath(*(vEnd - 1), s, g);
+    }
+    else {
+        std::cout << "No path exists\n";
+    }
+
+}
+
+
