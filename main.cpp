@@ -1,15 +1,14 @@
 //Team Sombrero
 
-
-#include "maze.h"
 #include "SinglePair.h"
+#include "A_star.h"
 
 int main()
 {
     try
     {
         //parts b-e
-        runBasic();
+        runAStar();
     }
     catch (const char* msg) {
         std::cerr << msg << "\n";
