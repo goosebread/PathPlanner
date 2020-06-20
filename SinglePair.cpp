@@ -144,13 +144,13 @@ bool findShortestPathBFS(Graph::vertex_descriptor start, Graph::vertex_descripto
             //stop if this is the end
             if (currentNode == end) { return true; }
 
-            //add neighbors to stack
+            //add neighbors to queue
             Graph::adjacency_iterator nIt, nEnd;
             boost::tie(nIt, nEnd) = adjacent_vertices(currentNode, g);
 
             for (; nIt != nEnd; nIt++) {
                 if (!g[*nIt].visited && !g[*nIt].marked) {
-                    //add to stack
+                    //add to queue
                     g[*nIt].pred = currentNode;
                     g[*nIt].marked = true;
                     frontier.push(*nIt);
