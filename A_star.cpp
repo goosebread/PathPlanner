@@ -1,5 +1,7 @@
 #include "A_star.h"
 
+#include "condense.h"
+
 bool aStar(Graph::vertex_descriptor start, Graph::vertex_descriptor end, Graph& g) {
     graphFunctions::clearMarked(g);
     graphFunctions::clearVisited(g);
@@ -98,10 +100,16 @@ void runAStar(){
     //vEnd is a sentinel value, can't dereference
 
     std::cout << "A-star:\n";
+
+    setEdgeWeights(g, 1);
+    condense(*vIt, *(vEnd - 1), g);
+
     if (aStar(*vIt, *(vEnd - 1), g)) {
         std::stack<Graph::vertex_descriptor> s;
         graphToStack(*vIt, *(vEnd - 1), s, g);
         m.printPath(*(vEnd - 1), s, g);
+
+        cout << g;
     }
     else {
         std::cout << "No path exists\n";
