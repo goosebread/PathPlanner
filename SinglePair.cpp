@@ -162,16 +162,6 @@ bool findShortestPathBFS(Graph::vertex_descriptor start, Graph::vertex_descripto
     return false;
 }
 
-bool graphToStack(Graph::vertex_descriptor start, Graph::vertex_descriptor end, std::stack<Graph::vertex_descriptor>& s, Graph& g){
-    Graph::vertex_descriptor currentNode = end;
-    while (currentNode != start) {
-        s.push(currentNode);
-        currentNode = g[currentNode].pred;
-    }
-    s.push(currentNode);
-    return true;
-}
-
 void runBasic(){
     ifstream fin;
 
@@ -240,7 +230,6 @@ void runBasic(){
     else {
         std::cout << "No path exists\n";
     }
-
 }
 
 

@@ -1,5 +1,6 @@
 #pragma once
 #include "maze.h"
+#include "condense.h"
 
 //simulates DFS with backtracking. prints the maze at each step. Uses recursion
 //Inputs are the starting node and ending node(*(vEnd-1)) of graph g. maze m is used to print
@@ -24,10 +25,6 @@ bool limitedDFS(Graph::vertex_descriptor start, Graph::vertex_descriptor end, Gr
 //Inputs are the starting node and ending node(*(vEnd-1)) of graph g.
 //if found, path can be traced using predecessors from end to start
 bool findShortestPathBFS(Graph::vertex_descriptor start, Graph::vertex_descriptor end, Graph& g);
-
-//takes a graph and adds the path from end to start to a stack
-bool graphToStack(Graph::vertex_descriptor start, Graph::vertex_descriptor end,
-    std::stack<Graph::vertex_descriptor>& s, Graph& g);
 
 //parts b-e
 //reads name of maze file from keyboard
