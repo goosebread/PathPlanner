@@ -2,7 +2,7 @@
 
 #include "maze.h"
 #include "heapV.h"
-#include "SinglePair.h"
+#include "condense.h"
 
 //Runs A-star on graph g to find shortest path
 //Inputs are the starting node and ending node(*(vEnd-1)) of graph g.

@@ -1,7 +1,7 @@
 #pragma once
 
 #include "maze.h"
-#include "SinglePair.h"
+#include "condense.h"
 
 //assume equal edge weights
 //return true if end is found, only finds single pair paths

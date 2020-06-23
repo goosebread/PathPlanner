@@ -1,7 +1,5 @@
 #include "A_star.h"
 
-#include "condense.h"
-
 bool aStar(Graph::vertex_descriptor start, Graph::vertex_descriptor end, Graph& g) {
     graphFunctions::clearMarked(g);
     graphFunctions::clearVisited(g);
