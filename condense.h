@@ -2,6 +2,7 @@
 
 //doesn't do anything about cell coordinate values
 //makes it real awkward when trying to read the printed maze and figure out the path taken
+//leaves unconnected nodes which might be incompatible with current dijkstra implementation
 
 void condense(Graph::vertex_descriptor start, Graph::vertex_descriptor end, Graph& g) {
 	//find nodes with only 2 neighbors
@@ -33,9 +34,6 @@ void condense(Graph::vertex_descriptor start, Graph::vertex_descriptor end, Grap
 			}
 		}
 	}
-
-	//remove the node and join the neighbors directly
-	//update new edge weight
 }
 
 
