@@ -63,7 +63,9 @@ void runWavefront() {
 
     // Read the maze from the file.
     //ask for keyboard input here
-    string fileName = "maze_test.txt";
+    std::cout << "Enter the file name for the maze:\n";
+    string fileName;// = "maze_test.txt";
+    std::getline(std::cin, fileName);
 
     //test file validity
     fin.open(fileName.c_str());

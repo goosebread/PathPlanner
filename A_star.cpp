@@ -75,7 +75,9 @@ void runAStar(){
 
     // Read the maze from the file.
     //ask for keyboard input here
-    string fileName = "maze_test.txt";
+    std::cout << "Enter the file name for the maze:\n";
+    string fileName;// = "maze_test.txt";
+    std::getline(std::cin, fileName);
 
     //test file validity
     fin.open(fileName.c_str());
@@ -102,14 +104,14 @@ void runAStar(){
     std::cout << "A-star:\n";
 
     setEdgeWeights(g, 1);
-    condense(*vIt, *(vEnd - 1), g);
+    //condense(*vIt, *(vEnd - 1), g);
 
     if (aStar(*vIt, *(vEnd - 1), g)) {
         std::stack<Graph::vertex_descriptor> s;
         graphToStack(*vIt, *(vEnd - 1), s, g);
         m.printPath(*(vEnd - 1), s, g);
 
-        cout << g;
+        //cout << g;
     }
     else {
         std::cout << "No path exists\n";
