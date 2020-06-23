@@ -1,5 +1,4 @@
 #include "SingleSource.h"
-#include "heapV.h"
 
 // Relaxes the edge from node u to v.
 void relax(Graph &g, Graph::vertex_descriptor u, Graph::vertex_descriptor v){
@@ -71,4 +70,56 @@ bool bellmanFord(Graph& g, Graph::vertex_descriptor s){
         }
     }
     return true;// returns true if a negative cycle is not reachable from s
+}
+
+void runBFDijkstra() {
+    ifstream fin;
+
+    // Read the maze from the file.
+    //ask for keyboard input here
+    std::cout << "Enter the file name for the maze:\n";
+    string fileName;// = "maze_test.txt";
+    std::getline(std::cin, fileName);
+
+    //test file validity
+    fin.open(fileName.c_str());
+    if (!fin) {
+        cerr << "Cannot open " << fileName << endl;
+        exit(1);
+    }
+
+    maze m(fin);
+    fin.close();
+
+    Graph g;
+    m.mapMazeToGraph(g);
+
+    Graph::vertex_iterator vIt, vEnd;
+
+    graphFunctions::clearMarked(g);
+    graphFunctions::clearVisited(g);
+    graphFunctions::setNodeWeights(g, 1);
+    setEdgeWeights(g, 1);
+
+    boost::tie(vIt, vEnd) = vertices(g);
+
+    std::cout << "Bellman-Ford:\n";
+    if (bellmanFord(g, *vIt)) {
+        std::stack<Graph::vertex_descriptor> s;
+        graphToStack(*vIt, *(vEnd - 1), s, g);
+        m.printPath(*(vEnd - 1), s, g);
+    }
+    else {
+        std::cout << "No path exists\n";
+    }
+
+    std::cout << "Dijkstra:\n";
+    if (dijkstra(g, *vIt)) {
+        std::stack<Graph::vertex_descriptor> s;
+        graphToStack(*vIt, *(vEnd - 1), s, g);
+        m.printPath(*(vEnd - 1), s, g);
+    }
+    else {
+        std::cout << "No path exists\n";
+    }
 }

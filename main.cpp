@@ -1,6 +1,7 @@
 //Team Sombrero
 
 #include "SinglePair.h"
+#include "SingleSource.h"
 #include "A_star.h"
 #include "Wavefront.h"
 
@@ -10,9 +11,9 @@ int main()
 {
     try
     {
-        runBasic();
+        //runBasic();
 
-        //still need a way to print the sequence for dijkstra and bellman-ford
+        runBFDijkstra();
 
         //runWavefront();
         //runAStar();
