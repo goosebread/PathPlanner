@@ -1,4 +1,5 @@
 #include "SingleSource.h"
+#include "heapV.h"
 
 // Relaxes the edge from node u to v.
 void relax(Graph &g, Graph::vertex_descriptor u, Graph::vertex_descriptor v){
@@ -11,13 +12,28 @@ void relax(Graph &g, Graph::vertex_descriptor u, Graph::vertex_descriptor v){
     }
 }
 
+// Relaxes the edge e.
+void relax(Graph &g, Graph::edge_descriptor e){
+    int s_weight = g[boost::source(e,g)].weight;
+    int t_weight = g[boost::target(e,g)].weight;
+    int e_weight = g[e].weight;
+    if(s_weight > t_weight+e_weight){
+        g[boost::source(e,g)].weight = g[boost::target(e,g)].weight+e_weight;
+        g[boost::source(e,g)].pred = boost::target(e,g);
+    }
+    else if(t_weight > s_weight+e_weight){
+        g[boost::target(e,g)].weight = s_weight+e_weight;
+        g[boost::target(e,g)].pred = boost::source(e,g);
+    }
+}
+
 // Uses Dijsktra's algorithm to search for a shortest path from node s to every node in g, where all node weights must be positive.
 // If a path exists to every node, returns true and returns false otherwise.
 bool dijkstra(Graph &g, Graph::vertex_descriptor s){
     graphFunctions::clearVisited(g);
     graphFunctions::clearMarked(g);
     graphFunctions::setNodeWeights(g,999999999); // initialize nodes
-    g[s].weight = 0; // initialize statring node
+    g[s].weight = 0; // initialize starting node
     heapV<Graph::vertex_descriptor, Graph> vertex_heap; // a min-heap is used to store the nodes and find the one with the smallest value
     Graph::vertex_iterator vIt, vEnd;
     std::tie(vIt, vEnd) = vertices(g);
@@ -51,16 +67,16 @@ bool dijkstra(Graph &g, Graph::vertex_descriptor s){
 // Uses the Bellman-Ford algorithm to search for a shortest path from node s to every node in graph g, where g can have negative edge weights.
 bool bellmanFord(Graph& g, Graph::vertex_descriptor s){
     graphFunctions::clearVisited(g);
+    graphFunctions::clearVisited(g);
     graphFunctions::setNodeWeights(g,999999999); // initialize nodes
-    g[s].weight = 0; // initialize statring node
+    g[s].weight = 0; // initialize starting node
     Graph::edge_iterator eIt, eEnd;
     for(int i = 1; i < boost::num_vertices(g); i++){
         std::tie(eIt, eEnd) = edges(g);
         for(; eIt != eEnd; eIt++){
             // set each node's pred field to the predecessor node in a shortest path from node s, if such a path exists
             // the weight property of nodes is used to store the shortest path estimates
-            relax(g,boost::source(*eIt,g),boost::target(*eIt,g));
-            relax(g,boost::target(*eIt,g),boost::source(*eIt,g));
+            relax(g,*eIt);
         }
     }
     std::tie(eIt, eEnd) = edges(g);
@@ -69,7 +85,7 @@ bool bellmanFord(Graph& g, Graph::vertex_descriptor s){
             return false; // returns false if a negative cycle is reachable from s
         }
     }
-    return true;// returns true if a negative cycle is not reachable from s
+    return true; // returns true if a negative cycle is not reachable from s
 }
 
 void runBFDijkstra() {

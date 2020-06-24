@@ -4,8 +4,11 @@
 #include "condense.h"
 #include "heapV.h"
 
-// Relaxes the edge from node u to v.
+// Relaxes the edge from node u to v. Used in dijkstra.
 void relax(Graph &g, Graph::vertex_descriptor u, Graph::vertex_descriptor v);
+
+// Relaxes the edge e. Used in bellmanFord.
+void relax(Graph &g, Graph::edge_descriptor e);
 
 // Uses Dijsktra's algorithm to search for a shortest path from node s to every node in g, where all node weights must be positive.
 // If a path exists to every node, returns true and returns false otherwise.

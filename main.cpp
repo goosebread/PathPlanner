@@ -13,10 +13,10 @@ int main()
     {
         //runBasic();
 
-        runBFDijkstra();
+        //runBFDijkstra();
 
         //runWavefront();
-        //runAStar();
+        runAStar();
     }
     catch (const char* msg) {
         std::cerr << msg << "\n";
